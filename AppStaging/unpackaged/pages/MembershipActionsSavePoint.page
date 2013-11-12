@@ -1,0 +1,215 @@
+<apex:page standardController="Contact" extensions="MembershipFunctionControllerSavePoint" >
+ <apex:outputPanel layout="none" id="MainPanel">
+    <apex:form id="buttons" rendered="{!showButtonsSection}">
+        <apex:pageBlock id="memDetailBlock">
+           <apex:pageBlockButtons location="top" id="memButtons" >
+                <apex:commandButton value="Add Membership" action="{!showJoin}" rendered="{!contact.Is_Member__c == false}"/>
+                <apex:commandButton value="Renew Membership" action="{!showRenew}" rendered="{!contact.Is_Member__c == true}"/>
+                <apex:commandButton value="Quit Membership" action="{!showQuit}" rendered="{!contact.Is_Member__c == true}"/>
+                <apex:commandButton value="Convert To Leader" action="{!showLeaderConvert}" rendered="{!AND(contact.Is_Leader__c!=true,contact.Is_Member__c ==true)}"/>
+                <apex:commandButton value="Change Team/Leader" action="{!showChangeTeamLeader}" rendered="{!contact.Is_Member__c == true}"/>
+                <apex:commandButton value="End Leadership" action="{!showEndLeadership}" rendered="{!contact.Is_Leader__c == true}"/>
+            </apex:pageBlockButtons>
+            <apex:outputText style="font-weight:800" value="Membership"/>
+            <apex:pageBlockSection id="memDetailBlockSection">
+                <apex:outputField value="{!contact.Name}"/>
+                <apex:outputField value="{!contact.Membership_Status__c}"/>
+                <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                <apex:outputField value="{!contact.Membership_Expiration__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Renewal_Date__c}"/>
+                <apex:outputField value="{!contact.Organizer__c}"/>
+                <apex:outputField value="{!contact.Stand_Team_Affiliation__c}"/>
+                <apex:outputField value="{!contact.Stand_Leader__c}"/>
+                <apex:outputField value="{!contact.Membership_Type__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Gift_Amount__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Gift_Date__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:outputPanel>  
+
+    <apex:form id="joinForm" rendered="{!showJoinSection}">
+        <apex:pageBlock id="joinPageBlock">
+            <apex:pageBlockButtons location="top" id="joinButtonsBlock">
+                <apex:commandButton value="Join" action="{!joinMember}" rerender="MainPanel"/>
+                <apex:commandButton value="Cancel" action="{!doCancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Let's Make this person a Member</h1>
+                    
+                    <apex:pageBlockSection id="joinPageBlockSection" >
+                        <apex:outputField value="{!contact.Name}"/>
+                        <apex:selectList value="{!memType}" id="memType" size="1" title="MemType" label="Membership Type" >
+                            <apex:selectOptions value="{!MemTypes}"></apex:selectOptions>
+                            <apex:actionSupport event="onchange" rerender="frequencyList"/>
+                        </apex:selectList>
+                        <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" required="true">
+                            <apex:selectOptions value="{!Teams}"/>
+                            <apex:actionSupport event="onchange" rerender="leaderList"/>
+                        </apex:selectList>
+                        <apex:selectList id="leaderList" value="{!leaderId}" size="1" title="Leader" label="Leader" onchange="FetchData(this.options[this.selectedIndex].text);">
+                            <apex:selectOptions value="{!Leaders}"></apex:selectOptions>
+                        </apex:selectList> 
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection >               
+                        <apex:inputtext value="{!giftAmount}" size="5" title="giftAmount" label="Membership Gift Amount"/>
+                        <apex:selectList id="payType" value="{!payType}" size="1" title="Pay Type" label="Pay Type" onchange="FetchData(this.options[this.selectedIndex].text);">
+                            <apex:selectOptions value="{!PayTypes}"></apex:selectOptions>
+                        </apex:selectList> 
+                        <apex:selectList id="frequencyList" value="{!frequency}" size="1" title="Frequency" label="Frequency" onchange="FetchData(this.options[this.selectedIndex].text);">
+                            <apex:selectOptions value="{!Frequencies}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:pageBlockSection>   
+                        <apex:pageBlockSection id="CreditCardInformation" >
+                            <apex:inputtext value="{!ccNumber}" size="20" title="ccNumber" label="Credit Card Number"/>
+                            <apex:inputtext value="{!cv2}" size="5" title="cv2" label="CV2"/>
+                            <apex:inputtext value="{!nameOnCard}" size="30" title="nameOnCard" label="Name on Card"/>
+                            <apex:inputtext value="{!expDate}" size="10" title="expDate" label="Expiration Month/Year (MM/YY)"/>
+                     </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:form id="renewForm" rendered="{!showRenewSection}">
+        <apex:pageBlock id="renewpageblock">
+            <apex:pageBlockButtons location="top" id="renewButtonsBlock">
+                <apex:outputPanel style="text=align:center" layout="block">
+                    <apex:commandButton value="Renew" action="{!renewMember}" />
+                    <apex:commandButton value="Cancel" action="{!doCancel}"/>
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Let's Renew this Member</h1>
+                <apex:pageBlockSection id="renewPageBlockSection">
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:outputField value="{!contact.Membership_Expiration__c}"/>
+                    <apex:outputField value="{!contact.Last_Membership_Renewal_Date__c}"/>
+                    <apex:outputField value="{!contact.Organizer__c}"/>     
+                    <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" required="true">
+                        <apex:selectOptions value="{!Teams}"/>
+                        <apex:actionSupport event="onchange" rerender="leaderList"/>
+                    </apex:selectList>
+                    <apex:selectList id="leaderList" value="{!leaderId}" size="1" title="Leader" label="Leader" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!Leaders}"></apex:selectOptions>
+                    </apex:selectList>  
+                    <apex:selectList value="{!memType}" size="1" title="MemType" label="Membership Type" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!MemTypes}"></apex:selectOptions>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection >               
+	                <apex:inputtext value="{!giftAmount}" size="5" title="giftAmount" label="Membership Gift Amount"/>
+	                <apex:selectList id="payType" value="{!payType}" size="1" title="Pay Type" label="Pay Type" onchange="FetchData(this.options[this.selectedIndex].text);">
+	                    <apex:selectOptions value="{!PayTypes}"></apex:selectOptions>
+	                </apex:selectList> 
+	                <apex:selectList id="frequencyList" value="{!frequency}" size="1" title="Frequency" label="Frequency" onchange="FetchData(this.options[this.selectedIndex].text);">
+	                    <apex:selectOptions value="{!Frequencies}"></apex:selectOptions>
+	                </apex:selectList>
+                </apex:pageBlockSection>   
+	                <apex:pageBlockSection id="CreditCardInformation" >
+	                   <apex:inputtext value="{!ccNumber}" size="20" title="ccNumber" label="Credit Card Number"/>
+	                   <apex:inputtext value="{!cv2}" size="5" title="cv2" label="CV2"/>
+	                   <apex:inputtext value="{!nameOnCard}" size="30" title="nameOnCard" label="Name on Card"/>
+	                   <apex:inputtext value="{!expDate}" size="10" title="expDate" label="Expiration Month/Year (MM/YY)"/>
+	             	</apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    
+    <apex:form id="quitForm" rendered="{!showQuitSection}">
+        <apex:pageBlock id="quitpageblock" >
+            <apex:pageBlockButtons location="top">
+            	<apex:outputPanel style="text=align:center" layout="block">
+	                <apex:commandButton value="Quit" action="{!quitMember}" />
+	                <apex:commandButton value="Cancel" action="{!doCancel}"/>
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>WARNING!  This will end the Member's Membership and remove them from their team and leader.  </h1>
+                <apex:pageBlockSection id="QuitPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Stand_Team_Affiliation__c}" label="Current Team"/>
+                	<apex:outputField value="{!contact.Stand_Leader__c}" label="Current Leader"/>
+                    
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    
+    <apex:form id="convertForm" rendered="{!showLeaderConvertSection}">
+        <apex:pageBlock id="quitpageblock">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Convert" action="{!convertToLeader}" />
+                <apex:commandButton value="Cancel" action="{!doCancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Make this Member a leader and remove them from their current leader. </h1>
+                <apex:pageBlockSection id="quitPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                  	<apex:outputField value="{!contact.Stand_Team_Affiliation__c}" label="Make Leader for Current Team"/>
+                	<apex:outputField value="{!contact.Stand_Leader__c}" label="Leader to Be Removed"/>
+                    
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+        
+    <apex:form id="endLeadershipForm" rendered="{!showEndLeadershipSection}">
+        <apex:pageBlock id="endLeaderpageblock" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="End Leadership" action="{!endLeadership}"/>
+                <apex:commandButton value="Cancel" action="{!doCancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>End this Member's Leadership.  This will remove them as Leader from any current assigned members. </h1>
+                <apex:pageBlockSection id="endLeaderPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Leader_Type__c}"/>
+                    <apex:outputField value="{!contact.Member_Count__c}"/>
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+
+    
+    <apex:form id="changeTeamForm" rendered="{!showChangeTeamLeaderSection}">
+        <apex:pageBlock id="changeTeamLeaderPageBlock" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Update" action="{!changeTeamLeader}" />
+                <apex:commandButton value="Cancel" action="{!doCancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Change this Member's Team and/or Leader. </h1>
+                <apex:pageBlockSection id="changeTeamLeaderPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" required="true">
+                        <apex:selectOptions value="{!Teams}"/>
+                        <apex:actionSupport event="onchange" rerender="leaderList"/>
+                    </apex:selectList>
+                    <apex:selectList id="leaderList" value="{!leaderId}" size="1" title="Leader" label="Leader" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!Leaders}"></apex:selectOptions>
+                    </apex:selectList>   
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="true">
+        <apex:outputPanel id="refresh1" rendered="{!refreshPage}">
+            <script>
+                window.top.location='/{!Contact.id}';
+            </script>
+        </apex:outputPanel>
+    </apex:outputPanel>
+
+
+</apex:page>

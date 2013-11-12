@@ -1,0 +1,16 @@
+<apex:page title="Upload Attachment" standardController="Contact" extensions="NoteAttachment">
+
+<apex:form enctype="multipart/form-data">
+	<apex:pageMessages />
+	<apex:sectionHeader title="Upload an Attachment into Salesforce"/>
+	Files are limited to 5MB in size
+	<apex:pageblock >
+		<apex:pageblocksection columns="1">
+			<apex:inputfile value="{!myfile.body}" fileName="{!myfile.Name}" />			
+			<apex:commandbutton value="Save" action="{!SaveNoteAttachment}"/>
+			<apex:commandbutton value="Cancel" action="{!CancelAttachment}" />
+		</apex:pageblocksection>
+	</apex:pageblock>
+</apex:form>
+
+</apex:page>

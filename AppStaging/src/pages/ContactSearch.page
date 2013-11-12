@@ -1,0 +1,304 @@
+<apex:page standardController="Contact" extensions="ContactSearch" showHeader="true" sidebar="false" readonly="true" tabstyle="Contacts__tab" title="Stand for Children Membership">
+	<apex:stylesheet value="{!$Resource.standcrmappcss}" />
+	<apex:includeScript value="{!$Resource.jquery}"/>
+	<apex:includeScript value="{!$Resource.standcrmappjs}"/>
+	<apex:includeScript value="{!$Resource.contactsearchjs}"/>
+	
+	<script language="JavaScript">
+    	window.onload = checkDisplay;    
+    	
+    	function checkDisplay() {
+    		setTimeout('checkDisplayPopup()', 200);
+    	}		
+    	
+    	function checkDisplayPopup() {    		
+    		if('{!displayPopup}' == 'true') {
+    			var confResult = confirm('{!displayPopupInfo}');
+    			if(confResult == true) {  
+    				var cntHiddenField = document.getElementById('{!$Component.find_a_contact.cntSearch}');	
+    				cntHiddenField.value = true;    	
+    				contactSearchSubmit();			   						
+    				GetContacts();    				
+    			} else {
+    				closePopupDlg(); 
+    			}		
+    		}
+    		if('{!displayLimitPopup}' == 'true') {
+    			alert('{!displayPopupInfo}');
+    			closeLimitPopupDlg();    			
+    		}
+    	}
+	</script>  
+	
+	<!--[if IE]>
+	<div id="standcrmapp" class="ie">
+	<![endif]-->
+	<!--[if !IE] -->
+	<div id="standcrmapp">
+	<!-- [endif] -->
+		<h2>Find a Contact</h2>
+		<h3>Search for a specific person by name, email, phone, or address info</h3>
+		<apex:form id="find_a_contact" styleClass="advanced">
+			<apex:actionFunction name="GetContacts" action="{!SetSearchVariables}" />
+			<apex:inputHidden id="hdnSearch" value="{!blnSearch}"/>
+			<apex:inputHidden id="cntSearch" value="{!continueSearch}"/>
+			<p id="enter-name">
+				<apex:inputText id="txtFirstName" value="{!strFirstName}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+				<apex:inputText id="txtLastName" value="{!strLastName}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+			</p> 
+			<div id="advanced-search">
+				<p id="enter-email">
+					<apex:inputText id="txtEmail" value="{!strEmail}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+				</p>
+				<p id="enter-phone">
+					<apex:inputText id="txtPhone" value="{!strPhone}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+				</p>
+				<p id="enter-city-state">
+					<apex:inputText id="txtCity" value="{!strCity}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+					<apex:selectList id="lstState" value="{!strState}" styleClass="textbox" size="1" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);">
+						<apex:selectOptions value="{!getStateList}"></apex:selectOptions>
+					</apex:selectList>
+				</p>
+				<p id="enter-zip">
+					<apex:inputText id="txtZip" value="{!strZip}" styleClass="textbox" onblur="Change(this, event);" onfocus="Change(this, event);" onkeypress="DisplayContacts(event);"/>
+				</p>
+			</div>
+			<apex:commandLink id="cmdSearch" action="{!SetSearchVariables}" styleClass="button search" onclick="return contactSearchSubmit();">Search</apex:commandLink>
+			<!--<p id="advanced-search-p">or use <a id="advanced-search-link" href="#">Advanced Search</a></p>-->
+								
+						<apex:outputPanel id="opContacts">
+							<apex:pageBlock rendered="{! NOT(displayLimitPopup) && NOT(displayPopup) && blnSearch && ContactDisplay.size == 0 }">
+								<table class="no-results">
+									<tr>
+										<td width="100%">
+											<p>There are no contacts matching your search. Sorry.</p>
+										</td>
+									</tr>
+								</table>
+							</apex:pageBlock>
+							<apex:pageBlock title="Search Results ( {!intContactCount} Contacts )" 
+									rendered="{! NOT(displayLimitPopup) && NOT(displayPopup) && blnSearch && ContactDisplay.size > 0 }">
+								<apex:pageBlockTable value="{!ContactDisplay}" var="objContact">
+									<apex:column value="{!objContact.strName}" styleClass="name {!if(objContact.strName == '', 'empty', '')}">
+										<apex:facet name="header"> 
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortName"
+												value="Name {!if(strSortField == 'Name',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'Name', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="Name" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column width="15%" styleClass="email {!if(objContact.strEmail == '', 'empty', '')}" rendered="{!NOT(objContact.emailIsScrambled)}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortEMail"
+												value="E-Mail {!if(strSortField == 'EMail',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'EMail', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="EMail" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+										<a href="mailTo:{!objContact.strEmail}">{!objContact.strEmail}</a>
+									</apex:column>
+									<apex:column width="15%" styleClass="email {!if(objContact.strEmail == '', 'empty', '')}" rendered="{!objContact.emailIsScrambled}">										
+										{!objContact.strEmail}
+									</apex:column>
+									<apex:column value="{!objContact.strWorkPhone}" styleClass="work-phone {!if(objContact.strWorkPhone == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortWorkPhone"
+												value="Work Phone {!if(strSortField == 'WorkPhone',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'WorkPhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="WorkPhone" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strMobilePhone}" styleClass="mobile-phone {!if(objContact.strMobilePhone == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortMobilePhone"
+												value="Mobile Phone {!if(strSortField == 'MobilePhone',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'MobilePhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="MobilePhone" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strHomePhone}" styleClass="home-phone {!if(objContact.strHomePhone == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortHomePhone"
+												value="Home Phone {!if(strSortField == 'HomePhone',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'HomePhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="HomePhone" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strOtherPhone}" styleClass="other-phone {!if(objContact.strOtherPhone == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkSortOtherPhone"
+												value="Other Phone {!if(strSortField == 'OtherPhone',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'OtherPhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="OtherPhone" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strStreet}" styleClass="street {!if(objContact.strStreet == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkContactStreet"
+												value="Street {!if(strSortField == 'Street',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'Street', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="Street" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strCity}" styleClass="city {!if(objContact.strCity == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkContactCity"
+												value="City {!if(strSortField == 'City',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'City', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="City" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strMailingState}" styleClass="state {!if(objContact.strMailingState == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkContactState"
+												value="State Office {!if(strSortField == 'StateOffice',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'StateOffice', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="StateOffice" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strZip}" styleClass="zip {!if(objContact.strZip == '', 'empty', '')}">
+										<apex:facet name="header">
+											<apex:commandLink action="{!SearchContacts}" id="lnkContactZip"
+												value="Zip {!if(strSortField == 'Zip',
+												if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+												<apex:param value="{!if(strSortField == 'City', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+														name="column2" assignTo="{!strSortDirection}">
+												</apex:param>
+												<apex:param value="Zip" name="column1" assignTo="{!strSortField}"></apex:param>
+											</apex:commandLink>
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strDoNotFieldMsg1}" styleClass="message">																				
+									</apex:column>
+									<apex:column value="{!objContact.strDoNotFieldMsg2}" styleClass="message">																				
+									</apex:column>
+									<apex:column value="{!objContact.strDoNotFieldMsg3}" styleClass="message">																				
+									</apex:column>
+									<apex:column value="{!objContact.strDoNotFieldMsg4}" styleClass="message">																				
+									</apex:column>
+									<apex:column value="{!objContact.strDoNotFieldMsg5}" styleClass="message">																				
+									</apex:column>
+									<apex:column value="{!objContact.strMembershipSummary}" styleClass="membership {!if(objContact.strMembershipSummary == '', 'empty', '')}">
+										<apex:facet name="header">
+											Membership
+										</apex:facet>
+									</apex:column>
+									<apex:column value="{!objContact.strOrganizer}" styleClass="organizer {!if(objContact.strOrganizer == '', 'empty', '')}">										
+									</apex:column>
+									<apex:column value="{!objContact.strAffiliationSummary}" styleClass="affiliations {!if(objContact.strAffiliationSummary == '', 'empty', '')}">
+										<apex:facet name="header">
+											Affiliations
+										</apex:facet>
+									</apex:column>															
+																		
+									<apex:facet name="footer">
+										<apex:outputPanel layout="block">
+											<!-- ========================================== -->
+											<!-- PAGE X OF X IN X RESULTS -->
+											<!-- ========================================== -->
+											Page {!IF(paginator.pageCount=0, 0, paginator.pageNumberDisplayFriendly)} of {!paginator.pageCount} in {!paginator.recordCount} results
+											&nbsp;&nbsp;
+											<!-- ========================================== -->
+											<!-- FIRST                                      -->
+											<!-- ========================================== -->
+											<apex:outputText value="First" rendered="{!NOT(paginator.hasPrevious)}" />
+											<apex:commandLink value="First" rendered="{!paginator.hasPrevious}"
+												action="{!paginator.first}" />
+											&nbsp;&nbsp;
+											<!-- ========================================== -->
+											<!-- PREVIOUS                                   -->
+											<!-- ========================================== -->
+											<apex:outputText value="Previous" rendered="{!NOT(paginator.hasPrevious)}" />
+											<apex:commandLink value="Previous" rendered="{!paginator.hasPrevious}"
+												action="{!paginator.previous}" />
+											&nbsp;&nbsp;
+											<!-- ========================================== -->
+											<!-- PAGE SHORTCUTS                             -->
+											<!-- ========================================== -->
+											<apex:repeat value="{!paginator.previousSkipPageNumbers}" var="skipPageNumber">
+												<apex:outputPanel >
+													<apex:commandLink value="{!skipPageNumber+1}" action="{!skipToPage}">
+														<apex:param name="pageNumber" id="pageNumber" value="{!skipPageNumber}" assignto="{!pageNumber}" />
+													</apex:commandLink>
+												</apex:outputPanel>
+												&nbsp;&nbsp;
+											</apex:repeat>
+											<apex:outputText style="text-decoration:none; font-weight:bold; background-color: #FFFF00" 
+												value="{!paginator.pageNumber+1}"/>
+											&nbsp;&nbsp;
+											<apex:repeat value="{!paginator.nextSkipPageNumbers}" var="skipPageNumber">
+												<apex:outputPanel >
+													<apex:commandLink value="{!skipPageNumber+1}" action="{!skipToPage}">
+														<apex:param name="pageNumber" id="pageNumber" value="{!skipPageNumber}" assignto="{!pageNumber}" />
+													</apex:commandLink>
+												</apex:outputPanel>
+												&nbsp;&nbsp;
+											</apex:repeat>
+											<!-- ========================================== -->
+											<!-- NEXT                                       -->
+											<!-- ========================================== -->
+											<apex:outputText value="Next" rendered="{!NOT(paginator.hasNext)}" />
+											<apex:commandLink value="Next" rendered="{!paginator.hasNext}"
+												action="{!paginator.next}" />
+											&nbsp;&nbsp;
+											<!-- ========================================== -->
+											<!-- LAST                                       -->
+											<!-- ========================================== -->
+											<apex:outputText value="Last" rendered="{!NOT(paginator.hasNext)}" />
+											<apex:commandLink value="Last" rendered="{!paginator.hasNext}"
+												action="{!paginator.last}" />
+											&nbsp;&nbsp;
+											<!-- ========================================== -->
+											<!-- Page Size Options                          -->
+											<!-- ========================================== -->
+											<!--Page Size:
+											<apex:selectList value="{!paginator.pageSize}" size="1"
+												onchange="javascript: skipToPageNone();">
+												<apex:selectOptions value="{!paginator.pageSizeOptions}" />                                                                       
+											</apex:selectList>                                             
+											<apex:actionFunction name="skipToPageNone" action="{!skipToPage}"/>-->
+										</apex:outputPanel>
+									</apex:facet>
+								</apex:pageBlockTable>
+							</apex:pageBlock>
+						</apex:outputPanel>
+						<apex:actionFunction name="closePopupDlg" action="{!closePopup}" rerender=""/>
+						<apex:actionFunction name="closeLimitPopupDlg" action="{!closeLimitPopup}" rerender=""/>
+		</apex:form>
+	</div>
+</apex:page>

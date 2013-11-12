@@ -1,0 +1,86 @@
+<apex:page standardController="Contact" extensions="UserStats" showHeader="false" sidebar="false" title="Stand for Children Membership List">
+<!--<apex:stylesheet value="{!$Resource.standcrmappcss}" media="print" /> Frickin' Visualforce can't handle print stylesheets -->
+<apex:includeScript value="{!$Resource.jquery}"/>
+<apex:includeScript value="{!$Resource.standcrmappjs}"/>
+<!--<apex:includeScript value="{!$Resource.printmembersjs}"/>-->
+<style type="text/css" media="print">
+	@page {
+		size: landscape;
+	}
+</style>
+<apex:form >
+	<apex:outputPanel id="opMembers">
+		<apex:pageBlock rendered="{! ((blnMembersList) && (ContactDisplay.size > 0))}">
+			<div align="left">
+				<apex:outputLabel value="{!strStateName}
+					{! if((strChapterName == '' || strChapterName == null), '', ' - ')}
+					{! if((strChapterName == '' || strChapterName == null), '', strChapterName)}
+					{! if((strTeamName == '' || strTeamName == null), '', ' - ')}
+					{! if((strTeamName == '' || strTeamName == null), '', strTeamName)}
+					{! if((strMembersCount != ''), strMembersCount, '')}"
+					style="color: #000000; font-size: 1.2em; font-weight: bold;">
+				</apex:outputLabel>
+				<br /><br />
+			</div>
+			<apex:pageBlockTable value="{!ContactDisplay}" var="objContact" width="100%">
+			
+				<apex:column width="15%" value="{!objContact.strName} {!if(objContact.strLeaderType == null, '', '(')}{!objContact.strLeaderType}{!if(objContact.strLeaderType == null, '', ')')}">
+					<apex:facet name="header">
+						Name
+					</apex:facet>
+				</apex:column> 
+	
+				<apex:column value="{!objContact.strPrefEmail}" width="15%">
+					<apex:facet name="header">
+						Email
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strPrefPhone}" width="10%">
+					<apex:facet name="header">
+						Pref. Phone
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strMobilePhone}" width="10%">
+					<apex:facet name="header">
+						Mobile Phone
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strMembershipStatus}" width="10%">
+					<apex:facet name="header">
+						Membership
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strMembershipTeam}" width="10%">
+					<apex:facet name="header">
+						Team
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strOrganizer}" width="10%">
+					<apex:facet name="header">
+						Organizer
+					</apex:facet>
+				</apex:column>
+				
+				<apex:column value="{!objContact.strLeaderContactName}" width="10%">
+					<apex:facet name="header">
+						Team Leader
+					</apex:facet>
+				</apex:column>
+				
+			</apex:pageBlockTable>
+			
+		</apex:pageBlock>
+		<apex:pageBlock title="There are no affiliated members for the selected State/Chapter/Team."
+				rendered="{! ((blnMembersList) && (ContactDisplay.size == 0))}">
+		</apex:pageBlock>
+	</apex:outputPanel>
+</apex:form>
+<script type="text/javascript">
+	window.print();
+</script>
+</apex:page>

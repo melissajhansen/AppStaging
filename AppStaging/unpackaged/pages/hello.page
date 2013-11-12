@@ -1,0 +1,73 @@
+<apex:page docType="html-5.0" standardController="Account">
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+  This is your new Page<br/>
+   
+  <script type="text/javascript">      
+        function resizeParentIFrame(){
+            var h = document.body.scrollHeight;
+            //TODO - replace with the relevant page name.
+            var iframename = 'hello';
+            //TODO - replace with the relevant base url - page runs on the VF domain so functions return the VF domain. 
+            var baseUrlForInstance = 'https://emea.salesforce.com';
+            document.getElementById('helpframe').src = 'https://cs8.salesforce.com'+'{!$Resource.iFrameHelper}?height='+h+'&iframename='+iframename+'&cacheb='+Math.random();
+        }
+         
+        function forceParentIFrameResize(){
+            document.getElementById('helpframe').src=document.getElementById('helpframe').src;
+        }
+         
+        window.onload=function(){
+            resizeParentIFrame();
+        }
+  </script>  
+</apex:page>

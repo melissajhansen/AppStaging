@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/javascript</contentType>
+    <description>a masked input plugin for the jQuery javascript library.It has been tested on Internet Explorer, Firefox, Safari, Opera, and Chrome.  (source: http://digitalbush.com/projects/masked-input-plugin/)</description>
+</StaticResource>

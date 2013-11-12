@@ -1,0 +1,32 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+    <apex:form id="quitForm" rendered="true">
+        <apex:pageBlock id="quitpageblock" >
+            <apex:pageBlockButtons location="top">
+            	<apex:outputPanel style="text=align:center" layout="block">
+	                <apex:commandButton value="Quit" action="{!quitMember}" />
+	                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>WARNING!  This will end the Member's Membership and remove them from their team and leader.  </h1>
+                <apex:pageBlockSection id="QuitPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Stand_Team_Affiliation__r.name}" label="Current Team"/>
+                	<apex:outputField value="{!contact.Stand_Leader__r.name}" label="Current Leader"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection id="memNotesSection" columns="1">
+               		<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+               	</apex:pageBlockSection>                
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

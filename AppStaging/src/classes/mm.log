@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:ns0="urn:partner.soap.sforce.com" xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:partner.soap.sforce.com" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+   <SOAP-ENV:Header>
+      <tns:SessionHeader>
+         <tns:sessionId>00DL00000028EQk!AQEAQCGDgw71BMu7938DK26O3IdZYoz95ijAAbYh81JXA8GxWe3IevrBhj1if3t4J2Uv6h0vUA1hVl8bP1rMBd4czYqbTEZc</tns:sessionId>
+      </tns:SessionHeader>
+   </SOAP-ENV:Header>
+   <ns1:Body>
+      <ns0:query>
+         <ns0:queryString>select Id From ApexClass Where Name = &apos;C:\Users\mprcic\Documents\MavensMateProjects\AppStaging\src\classes\Person&apos; AND NamespacePrefix = &apos;&apos;</ns0:queryString>
+      </ns0:query>
+   </ns1:Body>
+</SOAP-ENV:Envelope>
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 336, in main
+    r.execute()
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 100, in execute
+    requested_function()
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 288, in new_apex_overlay
+    print config.connection.project.new_apex_overlay(self.payload)
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 1380, in new_apex_overlay
+    create_result = self.sfdc_client.create_apex_checkpoint(payload)
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_client.py", line 575, in create_apex_checkpoint
+    payload['ExecutableEntityId'] = self.get_apex_entity_id_by_name(object_type=payload['Object_Type'], name=payload['API_Name'])
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_client.py", line 196, in get_apex_entity_id_by_name
+    query_result = self.pclient.query('select Id From '+kwargs['object_type']+' Where Name = \''+kwargs['name']+'\' AND NamespacePrefix = \''+self.get_org_namespace()+'\'')
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\sforce\partner.py", line 144, in query
+    queryResult = super(SforcePartnerClient, self).query(queryString)
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\sforce\base.py", line 527, in query
+    return self._sforce.service.query(queryString)
+  File "build\bdist.win32\egg\suds\client.py", line 542, in __call__
+    return client.invoke(args, kwargs)
+  File "build\bdist.win32\egg\suds\client.py", line 602, in invoke
+    result = self.send(soapenv)
+  File "build\bdist.win32\egg\suds\client.py", line 649, in send
+    result = self.failed(binding, e)
+  File "build\bdist.win32\egg\suds\client.py", line 702, in failed
+    r, p = binding.get_fault(reply)
+  File "build\bdist.win32\egg\suds\bindings\binding.py", line 265, in get_fault
+    raise WebFault(p, faultroot)
+WebFault: Server raised fault: 'MALFORMED_QUERY: 
+Id From ApexClass Where Name = 'C:\Users\mprcic\Documents\MavensMateProjects\AppStaging\src\classes\Person'
+                              ^
+ERROR at Row:1:Column:38
+Invalid string literal 'C:\Users\mprcic\Documents\MavensMateProjects\AppStaging\src\classes\Person'. Illegal character sequence '\U' in string literal.'
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:ns0="urn:partner.soap.sforce.com" xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:partner.soap.sforce.com" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+   <SOAP-ENV:Header>
+      <tns:SessionHeader>
+         <tns:sessionId>00DL00000028EQk!AQEAQCGDgw71BMu7938DK26O3IdZYoz95ijAAbYh81JXA8GxWe3IevrBhj1if3t4J2Uv6h0vUA1hVl8bP1rMBd4czYqbTEZc</tns:sessionId>
+      </tns:SessionHeader>
+   </SOAP-ENV:Header>
+   <ns1:Body>
+      <ns0:getUserInfo/>
+   </ns1:Body>
+</SOAP-ENV:Envelope>
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 921, in execute_apex
+    location = self.__log_anonymous_apex(params['body'], execute_result['log'], params.get("script_name", None))
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 1689, in __log_anonymous_apex
+    src = open(location, "w")
+IOError: [Errno 22] invalid mode ('w') or filename: u'C:/Users/mprcic/Documents/MavensMateProjects\\AppStaging\\apex-scripts\\log\\2013-11-08-09:43:09.json'
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 921, in execute_apex
+    location = self.__log_anonymous_apex(params['body'], execute_result['log'], params.get("script_name", None))
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 1689, in __log_anonymous_apex
+    src = open(location, "w")
+IOError: [Errno 22] invalid mode ('w') or filename: u'C:/Users/mprcic/Documents/MavensMateProjects\\AppStaging\\apex-scripts\\log\\2013-11-08-09:47:03.json'
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 921, in execute_apex
+    location = self.__log_anonymous_apex(params['body'], execute_result['log'], params.get("script_name", None))
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 1689, in __log_anonymous_apex
+    src = open(location, "w")
+IOError: [Errno 22] invalid mode ('w') or filename: u'C:/Users/mprcic/Documents/MavensMateProjects\\AppStaging\\apex-scripts\\log\\2013-11-08-09:48:43.json'
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 921, in execute_apex
+    location = self.__log_anonymous_apex(params['body'], execute_result['log'], params.get("script_name", None))
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 1689, in __log_anonymous_apex
+    src = open(location, "w")
+IOError: [Errno 22] invalid mode ('w') or filename: u'C:/Users/mprcic/Documents/MavensMateProjects\\AppStaging\\apex-scripts\\log\\2013-11-08-10:50:25.json'
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 577, in clean
+    os.remove(full_file_path)
+WindowsError: [Error 32] The process cannot access the file because it is being used by another process: u'C:/Users/mprcic/Documents/MavensMateProjects\\AppStaging\\src\\classes\\mm.log'
+[MAVENSMATE CAUGHT ERROR]
+None
+[MAVENSMATE CAUGHT ERROR]
+Traceback (most recent call last):
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 336, in main
+    r.execute()
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 100, in execute
+    requested_function()
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\mm.py", line 140, in compile_selected_metadata
+    print config.connection.project.compile_selected_metadata(self.payload)
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_project.py", line 374, in compile_selected_metadata
+    result = self.sfdc_client.compile_with_tooling_api(files, container_id)
+  File "C:\Users\mprcic\AppData\Roaming\Sublime Text 3\Packages\MavensMate\mm\lib\mm_client.py", line 484, in compile_with_tooling_api
+    query_string = "Select Id, MetadataContainerId, MetadataContainerMemberId, State, IsCheckOnly, CompilerErrors, ErrorMsg FROM ContainerAsyncRequest WHERE Id='"+response["id"]+"'"
+TypeError: list indices must be integers, not str

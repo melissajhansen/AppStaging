@@ -1,0 +1,32 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+    <apex:form id="changeLeadersTeamForm" rendered="true">
+        <apex:pageBlock id="changeTeamPageBlock" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Update" action="{!changeLeaderTeam}" />
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Change the team this Leader is assigned to. </h1>
+            <apex:pageMessage summary="This will remove them as Leader from any current assigned members!" severity="warning" strength="3"/>
+                <apex:pageBlockSection id="changeTeamLeaderPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Leader_Type__c}"/>
+                    <apex:outputField value="{!contact.Stand_Team_Affiliation__c}" Label="Currently a Leader of"/>
+                    <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" >
+                        <apex:selectOptions value="{!Teams}"/>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection id="memNotesSection" >
+               		<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+               	</apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

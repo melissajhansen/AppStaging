@@ -1,0 +1,4 @@
+<apex:page standardController="Contact" extensions="UserStats" cache="true" contentType="text/csv#{!strFileName}.csv" language="en-US">
+{!strDownloadData}
+{!strFileHeader}
+</apex:page>

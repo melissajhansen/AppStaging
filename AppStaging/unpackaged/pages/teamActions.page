@@ -1,0 +1,87 @@
+<apex:page standardController="Account" extensions="TeamFunctionController">
+
+	<apex:form id="TeamHeaderDetail" rendered="{!showDetailSection}">
+		<apex:pageBlock id="TeamHeaderPageBlock" mode="maindetail">
+			<apex:pageBlockButtons location="top" id="teamButtons" >
+		        <apex:commandButton value="Edit Details" action="{!showEditDetails}" rendered="True"/>
+		        <apex:commandButton value="Move To a Different Chapter" action="{!showChangeChapter}" rendered="True"/>
+		        <apex:commandButton value="Deactivate Team" action="{!showDeactivateTeam}" rendered="True"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection >
+				<apex:pageMessages />
+				<apex:outputField value="{!account.name}" label="Team Name"/>
+				<apex:outputField value="{!account.parent.name}" label="Chapter"/>
+				<apex:outputField value="{!account.Organizer__r.name}"/>
+				<apex:outputField value="{!account.Member_Count__c}"/>
+				<apex:outputField value="{!account.Active_Member_Count__c}"/>
+				<apex:outputField value="{!account.Lapsing_Member_Count__c}"/>
+				<apex:outputField value="{!account.Lapsed_Member_Count__c}"/>
+				<apex:outputField value="{!account.Leader_Count__c}"/>
+				<apex:outputField value="{!account.Team_Leader_Count__c}"/>
+				<apex:outputField value="{!account.Leader_in_Training_Count__c}"/>
+				<apex:outputField value="{!account.Connected_Member_Count__c}"/>
+				<apex:outputField value="{!account.Orphan_Count__c}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+
+	
+	<apex:form id="ChangeChapterForm" rendered="{!showChangeChapterSection}">
+		<apex:pageBlock id="changeChapterPageBlock" mode="maindetail">
+			<apex:pageBlockButtons location="top" >
+				<apex:commandButton value="Change" action="{!changeChapter}"/>
+				<apex:commandButton value="Cancel" action="{!doCancel}"/>
+			</apex:pageBlockButtons>
+			<apex:pageMessage summary="WARNING!! This will move the entire team, its members and Leaders to the chapter you select.  Please be sure this is correct before completing."  severity="warning" strength="3"/>
+			<apex:pageBlockSection id="changeChapterSection">
+				<apex:pageMessages />
+				<apex:selectList value="{!chapterId}" id="Chapter" size="1" label="Chapter">
+					<apex:selectOptions value="{!Chapters}"/>
+				</apex:selectList>
+				<apex:outputField value="{!account.Organizer__r.name}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	
+	<apex:form id="DetailsEditForm" rendered="{!showEditDetailsSection}">
+		<apex:pageBlock id="EditDetailsPageBlock" mode="maindetail">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="Make Changes" action="{!editDetails}"/>
+				<apex:commandButton value="Cancel" action="{!doCancel}"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection id="editDetailsSection">
+				<apex:pageMessages />
+				<apex:inputtext value="{!teamName}" label="Team Name"/>
+				<apex:selectList value="{!organizerId}" id="Organizer" size="1" label="Organizer">
+					<apex:selectOptions value="{!Organizers}"/>
+				</apex:selectList>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+
+	<apex:form id="DeactivateTeamForm" rendered="{!showDeactivateTeamSection}">
+		<apex:pageBlock id="deactivateTeamPageBlock" mode="maindetail">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="Deactivate" action="{!deactivateTeam}"/>
+				<apex:commandButton value="Cancel" action="{!doCancel}"/>
+			</apex:pageBlockButtons>
+			<apex:pageMessages />
+			<apex:pageMessage summary="WARNING! This will make this Team Inactive and remove the Organizer." severity="warning" strength="2"/>
+			<apex:pageBlockSection id="deactivateTeamSection">
+				<apex:outputField value="{!account.parent.name}"/>
+				<apex:outputField value="{!account.Organizer__r.name}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	
+	<apex:outputPanel id="refresh" rendered="true">
+        <apex:outputPanel id="refresh1" rendered="{!refreshPage}">
+            <script>
+                window.top.location='/{!Account.id}';
+            </script>
+        </apex:outputPanel>
+    </apex:outputPanel>
+	
+
+	
+</apex:page>

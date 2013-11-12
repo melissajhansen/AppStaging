@@ -1,0 +1,12 @@
+<apex:page title="File Uploaded" standardController="Contact" extensions="NoteAttachment">
+
+<apex:form >
+	<apex:sectionHeader title="Success: Your file has been successfully uploaded."/>
+	<apex:pageblock >
+		<apex:pageblocksection columns="1">
+			<apex:commandbutton value="Continue" action="{!CancelAttachment}" />
+		</apex:pageblocksection>
+	</apex:pageblock>
+</apex:form>
+
+</apex:page>

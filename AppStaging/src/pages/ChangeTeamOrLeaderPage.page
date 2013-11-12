@@ -1,0 +1,35 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+    <apex:form id="changeTeamForm" rendered="true">
+        <apex:pageBlock id="changeTeamLeaderPageBlock" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Update" action="{!changeTeamLeader}" />
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Change this Member's Team and/or Leader. </h1>
+                <apex:pageBlockSection id="changeTeamLeaderPageBlockSection" >
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" >
+                        <apex:selectOptions value="{!Teams}"/>
+                        <apex:actionSupport event="onchange" rerender="leaderList"/>
+                    </apex:selectList>
+                    <apex:selectList id="leaderList" value="{!leaderId}" size="1" title="Leader" label="Leader" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!Leaders}"></apex:selectOptions>
+                    </apex:selectList>   
+                </apex:pageBlockSection>
+                <apex:pageBlockSection id="memNotesSection" >
+               		<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+               	</apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,7 @@
+<apex:page sidebar="false">
+    <p>The year today is {! YEAR(TODAY())}</p>
+    <p>Tomorrow will be day number {! DAY(TODAY() + 1)}</p>
+    <p>Let's find a maximum: {! MAX(1,2,3,4,5,6,5,4,3,2,1)} </p>
+    <p>The square root of 49 is {! SQRT(49)}</p>
+    <p>Is it true? {! CONTAINS('salesforce.com', 'force.com')}</p>
+</apex:page>

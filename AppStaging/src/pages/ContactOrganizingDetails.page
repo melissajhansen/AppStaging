@@ -1,0 +1,107 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+<apex:includeScript value="{!$Resource.jquery}"/>
+<apex:includeScript value="{!$Resource.jMaskedInput}"/>
+
+<apex:outputPanel layout="none" id="MainPanel">
+    <apex:form id="buttons" rendered="{!showButtonsSection}">
+        <apex:pageBlock id="memDetailBlock" rendered="{!showMemDetailBlockSection}">
+           <apex:pageBlockButtons location="top" id="memButtons" >
+                <apex:commandButton value="Add Membership" action="{!showJoin}" rendered="{!contact.Is_Member__c == false}"/>
+                <apex:commandButton value="Renew Membership" action="{!showRenew}" rendered="{!contact.Is_Member__c == true}"/>
+                <apex:commandButton value="Quit Membership" action="{!showQuit}" rendered="{!contact.Is_Member__c == true}"/>
+                <apex:commandButton value="Change Team/Leader" action="{!showChangeTeamLeader}" rendered="{!AND(contact.Is_Member__c == true,contact.Is_Leader__c != true)}"/>
+            </apex:pageBlockButtons>
+            <apex:outputText style="font-weight:800" value="Membership"/>
+            <apex:pageBlockSection id="memDetailBlockSection">
+                <apex:outputField value="{!contact.Name}"/>
+                <apex:outputField value="{!contact.Membership_Status__c}"/>
+                <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                <apex:outputField value="{!contact.Membership_Expiration__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Renewal_Date__c}"/>
+                <apex:outputField value="{!contact.Organizer_Name__c}" label="Organizer"/>
+                <apex:outputField value="{!contact.Stand_Team_Affiliation__r.name}"/>
+                <apex:outputField value="{!contact.Stand_Leader__r.name}"/>
+                <apex:outputField value="{!contact.Membership_Type__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Gift_Amount__c}"/>
+                <apex:outputField value="{!contact.Last_Membership_Gift_Date__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="NotesSection" columns="1">
+            	<apex:outputField value="{!contact.Membership_Notes__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+            <apex:pageBlock id="leaderDetailBlock" rendered="{!showLdrDetailBlockSection}">
+            	<apex:pageBlockButtons location="top" id="memButtons" >
+	                <apex:commandButton value="Convert To Leader" action="{!showLeaderConvert}" rendered="{!AND(contact.Is_Leader__c!=true,contact.Is_Member__c ==true)}"/>
+	                <apex:commandButton value="End Leadership" action="{!showEndLeadership}" rendered="{!contact.Is_Leader__c == true}"/>
+	                <apex:commandButton value="Change Leader's Team" action="{!showchangeLeaderTeam}" rendered="{!contact.Is_Leader__c == true}"/>
+            	</apex:pageBlockButtons>
+            <apex:outputText style="font-weight:800" value="Leadership"/>
+            <apex:pageBlockSection id="leaderDetailBlockSection">
+                <apex:outputField value="{!contact.Leader_Type__c}"/>
+                <apex:outputField value="{!contact.Stand_Team_Affiliation__r.name}"/>
+                <apex:outputField value="{!contact.LiT_Start_Date__c}"/>
+                <apex:outputField value="{!contact.LiT_Stop_Date__c}"/>
+                <apex:outputField value="{!contact.Leader_Start_Date__c}"/>
+                <apex:outputField value="{!contact.Leader_Stop_Date__c}"/>
+                <apex:outputField value="{!contact.Member_Count__c}"/>
+                <apex:outputField value="{!contact.Active_Member_Count__c}"/>
+                <apex:outputField value="{!contact.Lapsing_Member_Count__c}"/>
+                <apex:outputField value="{!contact.Lapsed_Member_Count__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:outputPanel>  
+
+    <apex:outputPanel rendered="{!joinRedirect}">
+        <script>
+            window.top.location='/apex/JoinPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!renewRedirect}">
+        <script>
+            window.top.location='/apex/RenewPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!quitRedirect}">
+        <script>
+            window.top.location='/apex/QuitPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!LeaderConvertRedirect}">
+        <script>
+            window.top.location='/apex/ConvertPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!changeTeamLeaderRedirect}">
+        <script>
+            window.top.location='/apex/ChangeTeamOrLeaderPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!EndLeadershipRedirect}">
+        <script>
+            window.top.location='/apex/EndLeadershipPage?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!changeLeaderTeamRedirect}">
+        <script>
+            window.top.location='/apex/changeLeaderTeam?id={!Contact.id}';
+        </script>
+    </apex:outputPanel>
+    
+    
+    <apex:outputPanel rendered="{!refreshPage}">
+        <script>
+            window.top.location='/{!Contact.id}';
+        </script>
+    </apex:outputPanel>
+
+
+
+</apex:page>

@@ -1,0 +1,28 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+      <apex:form id="endLeadershipForm" rendered="true">
+        <apex:pageBlock id="endLeaderpageblock" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="End Leadership" action="{!endLeadership}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>End this Leader's Leadership.</h1>
+            <apex:pageMessage summary="This will remove them as Leader from any current assigned members!" severity="warning" strength="3"/>
+            <apex:pageBlockSection id="endLeaderPageBlockSection" >
+                <apex:outputField value="{!contact.Name}"/>
+                <apex:outputField value="{!contact.Leader_Type__c}"/>
+                <apex:outputField value="{!contact.Member_Count__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="memNotesSection" columns="1">
+           		<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+           	</apex:pageBlockSection>                
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

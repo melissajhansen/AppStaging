@@ -1,0 +1,53 @@
+<apex:page controller="AttendanceSheetController" sidebar="false" showHeader="false" renderAs="pdf">
+<apex:form >
+    <table>
+        <tr>
+            <td>
+                <img src="{!URLFOR($Resource.StandImages,'Images/StandUPlogo.jpg')}"/>
+            </td>
+            <td>
+                <div align="center" style="font-family:arial; font-size:22px;">
+                Cohort Name: {!classDetail.cohort__r.Name}<br/>
+                Class Name: {!classDetail.Name}<br/>
+                Class Date: &nbsp; <apex:outputField value="{!classDetail.Date__c}" /> <br/>
+                </div>
+            </td>
+          </tr>
+    </table>
+    <br/>
+    <table width="100%" cellpadding="5" cellSpacing="0" border="1">
+      <tr style="background-color:black; border:1px; color:white; text-align:center; font-family:'Arial Unicode MS'; font-size:16px;">
+        <th width="17%">First Name</th>
+        <th width="17%">Last Name</th>
+        <th width="16%">Phone</th>
+        <th width="10%">Stand for Children Member?</th>
+        <th width="10%">Stand for Children Leader?</th>
+        <th width="30%">Signature</th>
+      </tr>
+            <apex:repeat value="{!contacts}" var="con">
+                <tr>
+                    <td>{!con.firstname}</td>
+                    <td>{!con.lastname}</td>
+                    <td>{!con.phone}</td>
+                    <td><apex:image url="{!IF(con.Dep_Membership_Start_Date__c != null,URLFOR($Resource.StandImages,'Images/checkbox_checked.gif'),URLFOR($Resource.StandImages,'Images/checkbox_unchecked.gif'))}"/> </td>
+                    <td><apex:image url="{!IF(con.LiT_Start_Date__c != null,URLFOR($Resource.StandImages,'Images/checkbox_checked.gif'),URLFOR($Resource.StandImages,'Images/checkbox_unchecked.gif'))}"/></td>                    
+                    <td>&nbsp;</td>
+                </tr>
+            </apex:repeat>
+      <tr style="background-color:black; color:white; font-family:'Arial Unicode MS'; font-size:16px;">
+        <td colspan="6">New Registrants</td>
+      </tr>
+      
+      <apex:repeat value="{!AttEmptyList}" var="al">
+          <tr>
+          <td width="17%">&nbsp;</td>
+          <td width="17%">&nbsp;</td>
+          <td width="16%">&nbsp;</td>
+          <td width="10%"><apex:image url="{!IF(al.contact__r.Dep_Membership_Start_Date__c != null,URLFOR($Resource.StandImages,'Images/checkbox_checked.gif'),URLFOR($Resource.StandImages,'Images/checkbox_unchecked.gif'))}"/></td>
+          <td width="10%"><apex:image url="{!IF(al.contact__r.LiT_Start_Date__c != null,URLFOR($Resource.StandImages,'Images/checkbox_checked.gif'),URLFOR($Resource.StandImages,'Images/checkbox_unchecked.gif'))}"/></td>
+          <td width="30%">&nbsp;</td>
+          </tr>
+      </apex:repeat>
+    </table>
+</apex:form>   
+</apex:page>

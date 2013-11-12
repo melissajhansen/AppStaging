@@ -1,0 +1,40 @@
+<apex:page standardController="Account" extensions="TeamFunctionController">
+
+	<apex:form id="TeamDetails" rendered="{!showDetailSection}">
+		<apex:pageBlock id="TeamDetailsPageBlock" mode="maindetail">
+			<apex:pageBlockButtons location="top" id="teamButtons" >
+		        <apex:commandButton value="Reactivate Team" action="{!showReactivateTeam}" rendered="True"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection >
+				<apex:outputField value="{!account.parentId}"/>
+				<apex:outputField value="{!account.Organizer__c}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+
+	<apex:form id="ReactivateTeamForm" rendered="{!showReactivateTeamSection}">
+		<apex:pageBlock id="reactivateTeamPageBlock">
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="Reactivate as Team" action="{!reactivateTeam}"/>
+				<apex:commandButton value="Cancel" action="{!cancel}"/>
+			</apex:pageBlockButtons>
+			<apex:pageMessages />
+                <h1>WARNING! This will make this Team Active and Assign the Organizer Indicated.</h1>
+			<apex:pageBlockSection id="reactivateTeamSection">
+				<apex:outputField value="{!account.parentId}"/>
+				<apex:selectList value="{!organizerId}" id="Organizer" size="1" label="Organizer">
+					<apex:selectOptions value="{!Organizers}"/>
+				</apex:selectList>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	
+	<apex:outputPanel id="refresh" rendered="true">
+        <apex:outputPanel id="refresh1" rendered="{!refreshPage}">
+            <script>
+                window.top.location='/{!Account.id}';
+            </script>
+        </apex:outputPanel>
+    </apex:outputPanel>
+
+</apex:page>

@@ -1,0 +1,23 @@
+<apex:page showHeader="true" sidebar="false">
+	<apex:stylesheet value="{!$Resource.standcrmappcss}" />
+	<apex:includeScript value="{!$Resource.jquery}"/>
+	<apex:includeScript value="{!$Resource.standcrmappjs}"/>
+
+	<div id="standcrmapp" class="home">
+		<h1>Welcome to <span class="rocket-logo">Rocket</span></h1>
+		<h3>Access to your critical data, online, anytime</h3>
+		<p>We've crafted Rocket to be a fast, easy way for you to see the data you need.</p>
+		<p>If you have any troubles or questions while using Rocket, let us know!</p>
+		<h3>For Help:</h3>
+		<ul>
+			<li>Questions about using Rocket?  Email <a href="mailto:rocket@stand.org">rocket@stand.org</a></li>
+			<li>Questions about your data? Email the data group at <a href="mailto:data@stand.org">data@stand.org</a></li>
+		</ul>
+		<h3>Have a blast!</h3>
+		<h3>♥ The Info Team</h3>
+		<!-- The text for these is embedded in the images in the CSS. Didn't have time to make it real text and apply a good font. -->
+		<!-- TODO: Make these meaningful HTML elements, with proper styling -->
+		<div id="member-lists-note" class="note"></div>
+		<div id="contact-search-note" class="note"></div>
+	</div>
+</apex:page>

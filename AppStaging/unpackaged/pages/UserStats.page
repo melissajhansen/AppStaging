@@ -1,0 +1,318 @@
+<apex:page standardController="Contact" extensions="UserStats" showHeader="true" sidebar="false" tabstyle="Membership__tab" title="Stand for Children Membership">
+	<apex:stylesheet value="{!$Resource.standcrmappcss}" />
+	<apex:includeScript value="{!$Resource.jquery}"/>
+	<apex:includeScript value="{!$Resource.standcrmappjs}"/>
+	<apex:includeScript value="{!$Resource.membershipjs}"/>
+	
+	<div id="standcrmapp">
+		<h2>Membership</h2>
+		<h3>View and print lists of members by state, chapter, or team</h3>
+		
+		<apex:form id="state_chapter_team_selector">
+			<apex:inputHidden id="hdnStateId" value="{!strStateId}"/>
+			
+			<h3>Choose a:</h3>				 	
+			<p id="choose-state">
+				<label for="lstState">State</label>
+				<apex:selectList styleClass="state-select" value="{!strStateId}" size="1" id="lstState">
+					<apex:actionSupport event="onchange" action="{!ResetChapterTeam}" reRender="lstChapter, lstTeam" />
+					<apex:selectOptions value="{!getStateNames}" />
+				</apex:selectList>
+			</p> 
+			<p id="choose-chapter" class="disabled">
+				<label for="lstChapter">Chapter</label>
+				<apex:selectList styleClass="chapter-select" value="{!strChapterId}" size="1" id="lstChapter"
+						disabled="{! if((strStateId == ''), true, false)}">
+					<apex:actionSupport event="onchange" action="{!ResetTeam}" reRender="lstTeam" />
+					<apex:selectOptions value="{!getChapterNames}" />
+				</apex:selectList>
+			</p>
+			<p id="choose-team" class="disabled">
+				<label for="lstTeam">Team<span class="optional"> (optional)</span></label>
+				<apex:selectList value="{!strTeamId}" size="1" id="lstTeam"
+						disabled="{! if((strChapterId == '' || strChapterId == 'All'), true, false)}">
+					<apex:selectOptions value="{!getTeamNames}" />
+				</apex:selectList>
+			</p>
+		 
+			<apex:commandLink id="cmdViewMembers" action="{!ShowMembers}" styleClass="button"
+					onclick="return viewMembersSubmit();">View Members</apex:commandLink>
+			
+			<!-- section for userStats
+			
+			-->
+			
+			<ul id="controls">
+				<li id="print"><apex:commandLink id="cmdDownload" action="{!DownloadMembers}" styleClass="button csv disabled" onclick="return downloadSubmit();" rendered="{! ((blnMembersList) && (ContactDisplay.size > 0))}">Download</apex:commandLink></li>
+				<li id="print"><apex:commandLink id="cmdPrint" action="{!PrintMembers}" styleClass="button print disabled" onclick="return printSubmit();" target="_blank" rendered="{! ((blnMembersList) && (ContactDisplay.size > 0))}">Print</apex:commandLink></li>
+			</ul>
+					 
+			<apex:outputPanel id="opMembers">
+				<apex:pageBlock rendered="{! ((blnMembersList) && (ContactDisplay.size > 0))}">
+					<div align="left" id="accountHeader">
+						<apex:outputLink value="/{!strStateId}" target="_blank" rendered="{!blnShowStateOfficeLink}">
+							{!strStateName}
+						</apex:outputLink>
+						- 
+						<apex:outputLink value="/{!strChapterId}" target="_blank" rendered="{!blnShowChapterLink}">
+							{!strChapterName}
+						</apex:outputLink>
+						-
+						<apex:outputLink value="/{!strTeamId}" target="_blank" rendered="{!blnShowTeamLink}">
+							{!strTeamName}
+						</apex:outputLink>
+						- {! if((strMembersCount != ''), strMembersCount, '')}
+						<br /><br />
+					</div>
+					<apex:pageBlockTable value="{!ContactDisplay}" var="objContact" width="100%">
+					
+						<apex:column width="15%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortName"
+									value="Name {!if(strSortField == 'objContact.strName',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strName', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strName" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink> 
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.Id}" target="_blank" rendered="{!blnAllowResultLinks}">
+      							{!objContact.strNameWithLeaderType}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strNameWithLeaderType, "" ) }
+						</apex:column> 
+	 
+						<apex:column width="15%" rendered="{!if(objContact.emailIsScrambled, 'false', 'true')}">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortEmail"
+									value="Email {!if(strSortField == 'objContact.strPrefEmail',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strPrefEmail', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strPrefEmail" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<a href="mailTo:{!objContact.strPrefEmail}">{!objContact.strPrefEmail}</a>
+						</apex:column>
+						
+						<apex:column width="15%" rendered="{!if(objContact.emailIsScrambled, 'true', 'false')}">		
+							<apex:facet name="header">
+								Email
+							</apex:facet>													
+							{!objContact.strPrefEmail}
+						</apex:column>
+						
+						<apex:column value="{!objContact.strPrefPhone}" width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortPrefPhone"
+									value="Pref. Phone {!if(strSortField == 'objContact.strPrefPhone',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strPrefPhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strPrefPhone" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+						</apex:column>
+						
+						<apex:column value="{!objContact.strMobilePhone}" width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortMobilePhone"
+									value="Mobile Phone {!if(strSortField == 'objContact.strMobilePhone',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strMobilePhone', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strMobilePhone" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortMembershipStatus"
+									value="Membership {!if(strSortField == 'objContact.strMembershipStatus',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strMembershipStatus', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strMembershipStatus" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.strMembershipId}" target="_blank"  rendered="{!blnAllowResultLinks}">
+      							{!objContact.strMembershipStatus}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strMembershipStatus, "" ) }
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortMembershipType"
+									value="Type {!if(strSortField == 'objContact.strMembershipType',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strMembershipType', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strMembershipType" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.strMembershipId}" target="_blank"  rendered="{!blnAllowResultLinks}">
+      							{!objContact.strMembershipType}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strMembershipType, "" ) }
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortLastMembershipGiftAmount"
+									value="Last Mem Gift Amount {!if(strSortField == 'objContact.decLastMembershipGiftAmount',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.decLastMembershipGiftAmount', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.decLastMembershipGiftAmount" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							$<apex:outputText value="{0,number,###,###,##0.00}">
+								<apex:param value="{!objContact.decLastMembershipGiftAmount}" />
+      							<!--{! if(objContact.decLastMembershipGiftAmount != "", ${!objContact.decLastMembershipGiftAmount}, {!objContact.decLastMembershipGiftAmount})}-->
+							</apex:outputText>
+							{! if ( !blnAllowResultLinks, objContact.decLastMembershipGiftAmount, "" ) }
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortMembershipTeam"
+									value="Team {!if(strSortField == 'objContact.strMembershipTeam',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strMembershipTeam', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strMembershipTeam" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.strMembershipTeamId}" target="_blank"  rendered="{!blnAllowResultLinks}">
+      							{!objContact.strMembershipTeam}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strMembershipTeam, "" ) }
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortOrganizer"
+									value="Organizer {!if(strSortField == 'objContact.strOrganizer',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strOrganizer', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strOrganizer" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.strOrganizerId}" target="_blank"  rendered="{!blnAllowResultLinks}">
+      							{!objContact.strOrganizer}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strOrganizer, "" ) }
+						</apex:column>
+						
+						<apex:column width="10%">
+							<apex:facet name="header">
+								<apex:commandLink action="{!SortMembers}" id="lnkSortLeaderContactName"
+									value="Team Leader {!if(strSortField == 'objContact.strLeaderContactName',
+									if(strSortDirection == 'Desc', '▲', '▼'), '')}">
+									<apex:param value="{!if(strSortField == 'objContact.strLeaderContactName', if(strSortDirection = 'Asc', 'Desc', 'Asc'), 'Asc')}"
+											name="column2" assignTo="{!strSortDirection}">
+									</apex:param>
+									<apex:param value="objContact.strLeaderContactName" name="column1" assignTo="{!strSortField}"></apex:param>
+								</apex:commandLink>
+							</apex:facet>
+							<apex:outputLink value="/{!objContact.strLeaderContactId}" target="_blank" rendered="{!blnAllowResultLinks}">
+      							{!objContact.strLeaderContactName}
+							</apex:outputLink>
+							{! if ( !blnAllowResultLinks, objContact.strLeaderContactName, "" ) }
+						</apex:column>					
+						
+	
+						<!--Start for paging-->
+						<br />
+                        <br />
+                        <apex:facet name="footer">
+                            <apex:outputPanel layout="block">
+                                <!-- ========================================== -->
+                                <!-- PAGE X OF X IN X RESULTS -->
+                                <!-- ========================================== -->
+                                Page {!IF(paginator.pageCount=0, 0, paginator.pageNumberDisplayFriendly)} of {!paginator.pageCount} in {!paginator.recordCount} results
+                                &nbsp;&nbsp;
+                                <!-- ========================================== -->
+                                <!-- FIRST                                      -->
+                                <!-- ========================================== -->
+                                <apex:outputText value="First" rendered="{!NOT(paginator.hasPrevious)}" />
+                                <apex:commandLink value="First" rendered="{!paginator.hasPrevious}"
+                                    action="{!paginator.first}" />
+                                &nbsp;&nbsp;
+                                <!-- ========================================== -->
+                                <!-- PREVIOUS                                   -->
+                                <!-- ========================================== -->
+                                <apex:outputText value="Previous" rendered="{!NOT(paginator.hasPrevious)}" />
+                                <apex:commandLink value="Previous" rendered="{!paginator.hasPrevious}"
+                                    action="{!paginator.previous}" />
+                                &nbsp;&nbsp;
+                                <!-- ========================================== -->
+                                <!-- PAGE SHORTCUTS                             -->
+                                <!-- ========================================== -->
+                                <apex:repeat value="{!paginator.previousSkipPageNumbers}" var="skipPageNumber">
+                                    <apex:outputPanel >
+                                        <apex:commandLink value="{!skipPageNumber+1}" action="{!skipToPage}">
+                                            <apex:param name="pageNumber" id="pageNumber" value="{!skipPageNumber}" assignto="{!pageNumber}" />
+                                        </apex:commandLink>
+                                    </apex:outputPanel>
+                                    &nbsp;&nbsp;
+                                </apex:repeat>
+                                <apex:outputText style="text-decoration:none; font-weight:bold; background-color: #FFFF00" 
+                                    value="{!paginator.pageNumber+1}"/>
+                                &nbsp;&nbsp;
+                                <apex:repeat value="{!paginator.nextSkipPageNumbers}" var="skipPageNumber">
+                                    <apex:outputPanel >
+                                        <apex:commandLink value="{!skipPageNumber+1}" action="{!skipToPage}">
+                                            <apex:param name="pageNumber" id="pageNumber" value="{!skipPageNumber}" assignto="{!pageNumber}" />
+                                        </apex:commandLink>
+                                    </apex:outputPanel>
+                                    &nbsp;&nbsp;
+                                </apex:repeat>
+                                <!-- ========================================== -->
+                                <!-- NEXT                                       -->
+                                <!-- ========================================== -->
+                                <apex:outputText value="Next" rendered="{!NOT(paginator.hasNext)}" />
+                                <apex:commandLink value="Next" rendered="{!paginator.hasNext}"
+                                    action="{!paginator.next}" />
+                                &nbsp;&nbsp;
+                                <!-- ========================================== -->
+                                <!-- LAST                                       -->
+                                <!-- ========================================== -->
+                                <apex:outputText value="Last" rendered="{!NOT(paginator.hasNext)}" />
+                                <apex:commandLink value="Last" rendered="{!paginator.hasNext}"
+                                    action="{!paginator.last}" />
+                                &nbsp;&nbsp;
+                                <!-- ========================================== -->
+                                <!-- Page Size Options                          -->
+                                <!-- ========================================== -->
+                                <!--Page Size:
+                                <apex:selectList value="{!paginator.pageSize}" size="1"
+                                    onchange="javascript: skipToPageNone();">
+                                    <apex:selectOptions value="{!paginator.pageSizeOptions}" />
+                                </apex:selectList>
+                                <apex:actionFunction name="skipToPageNone" action="{!skipToPage}"/>-->
+                            </apex:outputPanel>
+                        </apex:facet>
+						<!--End for paging-->
+					</apex:pageBlockTable>
+				</apex:pageBlock>
+				<apex:pageBlock title="There are no members for your selection"
+						rendered="{! ((blnMembersList) && (ContactDisplay.size == 0))}">
+				</apex:pageBlock>
+			</apex:outputPanel>
+					
+		</apex:form>
+	</div>
+</apex:page>

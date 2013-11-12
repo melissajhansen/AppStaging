@@ -1,0 +1,26 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+   <apex:form id="convertForm" rendered="true">
+        <apex:pageBlock id="quitpageblock">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Convert" action="{!convertToLeader}" />
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Make this Member a Leader of the Team indicated.</h1>
+                <apex:pageBlockSection id="convertPageBlockSection" >
+           			<apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team" >
+                    	<apex:selectOptions value="{!Teams}"/>
+                	</apex:selectList>
+             	</apex:pageBlockSection>
+                <apex:pageBlockSection id="memNotesSection" columns="1">
+               		<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+               	</apex:pageBlockSection>             	
+        </apex:pageBlock>
+    </apex:form>
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

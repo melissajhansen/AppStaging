@@ -1,0 +1,19 @@
+{
+    "username": "mprcic@stand.org.appstaging", 
+    "environment": "sandbox", 
+    "project_name": "AppStaging", 
+    "workspace": "C:/Users/mprcic/Documents/MavensMateProjects", 
+    "org_url": "", 
+    "namespace": "", 
+    "id": "9XMQSUOB8C11D1T39K13DRFJVEF6SZF1", 
+    "metadata_container": "1dcL0000000ChIHIA0", 
+    "subscription": [
+        "ApexClass", 
+        "ApexComponent", 
+        "ApexPage", 
+        "ApexTrigger", 
+        "CustomObject", 
+        "Profile", 
+        "StaticResource"
+    ]
+}

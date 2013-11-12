@@ -1,0 +1,127 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+
+	<apex:form id="joinForm" rendered="true">
+        <apex:pageBlock id="joinPageBlock">
+	            <apex:pageBlockButtons location="top" id="joinButtonsBlock">
+		        	<apex:outputPanel style="text=align:center" layout="block">
+		                <apex:commandButton value="Join" action="{!joinMember}" />
+		                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+		            </apex:outputPanel>
+	            </apex:pageBlockButtons>
+            <apex:pageMessages />
+                <h1>Let's Make this person a Member</h1>
+             
+            <apex:pageBlockSection id="joinPageBlockSection" >
+                <apex:outputField value="{!contact.Name}"/>
+                <apex:pageBlockSectionItem />
+                       
+                <apex:pageblocksectionitem > 
+                  	<apex:outputLabel value="Membership Type"/>
+                   	<apex:outputPanel layout="block" styleclass="requiredInput" id="MemTypePanel">
+						<div class="requiredBlock"></div>
+						<apex:selectList value="{!memType}" id="memType" size="1" title="MemType" label="Membership Type" >
+							<apex:selectOptions value="{!MemTypes}"></apex:selectOptions>									
+							<apex:actionSupport event="onchange" rerender="MemTypePanel"/>
+				        </apex:selectList>
+				        <apex:selectList id="frequencyList" value="{!frequency}" size="1" title="Frequency" label="Frequency" disabled="{!memType!='Sustaining'}">
+							<apex:selectOptions value="{!Frequencies}"></apex:selectOptions>
+                   		</apex:selectList>
+	                </apex:outputPanel>   
+                </apex:pageblocksectionitem>
+                    
+                <apex:pageblocksectionitem >
+                   	<apex:outputLabel value="Team"/>
+	                <apex:outputPanel layout="block" styleclass="requiredInput">
+		                <div class="requiredBlock"></div>
+		                <apex:selectList id="teamList" value="{!teamId}" size="1" title="Team" label="Team">
+							<apex:selectOptions value="{!Teams}"/>
+		                    <apex:actionSupport event="onchange" rerender="leaderList"/>
+		                </apex:selectList>
+	                </apex:outputPanel>
+                </apex:pageblocksectionitem>	                                    
+                        
+				<apex:pageblocksectionitem >
+					<apex:outputLabel value="Pay Type"/>
+	                <apex:outputPanel layout="block" styleclass="requiredInput">
+			            <div class="requiredBlock"></div>
+				        <apex:selectList id="payType" value="{!payType}" size="1" title="Pay Type">
+				            <apex:selectOptions value="{!PayTypes}"/>     
+				            <apex:actionSupport event="onchange" rerender="joinPageBlock"/>
+				        </apex:selectList> 
+	                </apex:outputPanel>     	
+				</apex:pageblocksectionitem>                       
+                        
+                <apex:selectList id="leaderList" value="{!leaderId}" size="1" title="Leader" label="Leader" onchange="FetchData(this.options[this.selectedIndex].text);">
+					<apex:selectOptions value="{!Leaders}"></apex:selectOptions>
+				</apex:selectList>          
+                        
+				<apex:pageBlockSectionItem >
+		           	<apex:outputLabel value="Gift Amount"/>
+	    	        <apex:outputPanel layout="block" styleclass="requiredInput">
+		                <div class="requiredBlock"></div>
+						<apex:inputtext value="{!giftAmount}" size="5" title="giftAmount" label="Membership Gift Amount"/>
+		            </apex:outputPanel>  
+		        </apex:pageblocksectionitem>                         
+                        
+	            <apex:pageBlockSectionItem >
+	            	<apex:outputPanel >
+	                </apex:outputPanel>  
+	            </apex:pageblocksectionitem> 
+                        
+            </apex:pageBlockSection>        
+                        
+	      	<apex:pageBlockSection id="ccSection" rendered="{!payType=='Credit Card'}">
+            	<apex:pageBlockSectionItem >
+               		<apex:outputLabel value="Credit Card Number" />
+    	           		<apex:outputPanel layout="block" styleClass="requiredInput">
+			        	<div class="requiredBlock"></div>  
+			        	<apex:inputtext value="{!ccNumber}" size="20" title="ccNumber" label="Credit Card Number" id="ccNumber" styleClass="cc-mask"/>
+                	</apex:outputPanel>  
+            	</apex:pageblocksectionitem>                       
+                      
+	            <apex:pageBlockSectionItem >
+                	<apex:outputLabel value="Expiration Date"/>
+     	            <apex:outputPanel layout="block" styleclass="requiredInput">
+		                <div class="requiredBlock"></div>
+				        <apex:selectList id="expMonth" value="{!expMonth}" size="1">
+				        	<apex:selectOptions value="{!Months}"/>
+				        </apex:selectList>
+				        <apex:selectList id="expYear" value="{!expYear}" size="1">
+				        	<apex:selectOptions value="{!Years}"/>
+				        </apex:selectList>					            
+	                </apex:outputPanel>  
+	            </apex:pageblocksectionitem>                        
+                        
+	            <apex:pageBlockSectionItem >
+                	<apex:outputLabel value="Name On Card"/>
+     	            <apex:outputPanel layout="block" styleclass="requiredInput">
+		                <div class="requiredBlock"></div>
+				        <apex:inputtext value="{!nameOnCard}" size="30" title="nameOnCard" label="Name on Card" />
+	                </apex:outputPanel>  
+	            </apex:pageblocksectionitem>                         
+                        
+	            <apex:pageBlockSectionItem >
+                	<apex:outputLabel value="CV2"/>
+     	            <apex:outputPanel layout="block" styleclass="requiredInput">
+		                <div class="requiredBlock"></div>
+				        <apex:inputtext value="{!cv2}" size="5" title="cv2" label="CV2" />
+	                </apex:outputPanel>  
+	            </apex:pageblocksectionitem>                        
+                        
+            </apex:pageBlockSection>  
+            
+  
+           	<apex:pageBlockSection id="memNotesSection" columns="1">
+	           	<apex:inputTextArea value="{!membershipNotes}" title="memNotes" label="Membership Notes"/>
+	        </apex:pageBlockSection>
+	        
+	    </apex:pageBlock>
+
+    </apex:form>
+    
+    <apex:outputPanel id="refresh" rendered="{!refreshPage}">
+	    <script>
+	        window.top.location='/{!Contact.id}';
+	    </script>
+     </apex:outputPanel>
+</apex:page>

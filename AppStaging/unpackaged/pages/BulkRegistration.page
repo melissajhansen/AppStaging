@@ -1,0 +1,107 @@
+<apex:page controller="BulkRegistrationController" id="pg" tabStyle="Cohort__c">
+<apex:includeScript value="{!URLFOR($Resource.jquery)}"/>
+<apex:sectionHeader title="Bulk Registration" subtitle="Cohort"/>
+<SCRIPT language="javascript">
+   $(function(){
+      
+        // add multiple select / deselect functionality
+       $("#selectAll").click(function (){
+             $('.case').attr('checked', this.checked);
+       });
+    
+       // if all checkbox are selected, check the selectall checkbox
+       // and viceversa
+       $(".case").click(function(){
+           if($(".case").length == $(".case:checked").length) {
+                   $("#selectAll").attr("checked", "checked");
+               } else {
+                   $("#selectAll").removeAttr("checked");
+               }
+         });
+    });
+</SCRIPT>
+<apex:form id="frm">
+    <apex:actionFunction name="callChangeOperator" action="{!changeOperatorList}" reRender="pb" status="status">
+        <apex:param name="abc" value="" assignTo="{!selectedIndex}"/>
+    </apex:actionFunction>
+    <apex:pageBlock id="pb">
+       
+        <apex:pageBlockSection title="Step 1 : Specify Filter Criteria" collapsible="false" id="pbs">
+            <apex:pageblockSectionItem id="pbsi">
+                <apex:outputpanel >
+                    <table>
+                        <tr>
+                        <td colspan="4" height="40">
+                            <b>Lead Source equals Stand Up and Not in a Cohort equals True</b>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td colspan="4"><apex:actionStatus id="status" startText="Please Wait..." startStyle="color:red;font-weight:bold;"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Field</b>
+                            </td>
+                             <td>
+                                <b>Operator</b>
+                            </td>
+                             <td>
+                                <b>Value</b>
+                            </td>
+                        </tr>
+                        <apex:repeat value="{!modelList}" var="model" id="rpt">
+                           <tr>
+                            <td>
+                              <apex:selectList size="1" id="field" value="{!model.field}" onchange="callChangeField('{!model.indx}')">
+                                <apex:selectoption itemLabel="--None--" itemValue="none"/>                                  
+                                <apex:selectOptions value="{!contacFieldList}"/>
+                              </apex:selectList>
+                            </td>
+                             <td>
+                               <apex:selectList size="1" id="fieldType" value="{!model.operator}" style="width:150px;">
+                                <apex:selectOptions value="{!model.oppList}"/>
+                              </apex:selectList>
+                            </td>
+                             <td>
+                               <apex:inputText id="value" value="{!model.value}"/>
+                            </td>
+                            <td>
+                              AND
+                            </td>
+                        </tr> 
+                        </apex:repeat>
+                        <tr>
+                        <td colspan="4">
+                            <apex:commandButton value="Go!" action="{!filterContact}"/>
+                        </td>
+                        </tr>
+                    </table>
+                </apex:outputpanel>
+            </apex:pageblockSectionItem>
+        </apex:pageblockSection>        
+    </apex:pageblock>
+    <apex:pageBlock >
+        <apex:commandButton value="Add To Cohort" action="{!aaTOCohort}"/>
+        <apex:pageblockTable value="{!conList}" var="model">
+              <apex:column >
+                     <apex:facet name="header">
+                         <input type="checkbox" id="selectAll"/>
+                      </apex:facet>
+                    <apex:inputCheckbox value="{!model.check}" styleClass="case"/>
+              </apex:column>
+              <apex:column headerValue="First Name" value="{!model.con.firstname}"/> 
+              <apex:column headerValue="Last Name" value="{!model.con.lastname}"/> 
+              <apex:column headerValue="Phone" value="{!model.con.phone}"/> 
+              <!--
+              <apex:column headerValue="Account Name" value="{!model.con.account.name}"/>  -->
+        </apex:pageblockTable>
+    </apex:pageBlock>
+</apex:form>
+<script>
+
+function callChangeField(index){
+    //alert(index);
+    callChangeOperator(index);
+}
+</script>
+</apex:page>

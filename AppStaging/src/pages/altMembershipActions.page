@@ -1,0 +1,62 @@
+<apex:page standardController="Contact" extensions="MemberFunctionController" >
+    <apex:form id="buttons">
+        <apex:commandButton value="Add Membership" action="{!showJoin}" rendered="{!isNotMember}"/>
+        <apex:commandButton value="Renew Membership" action="{!showRenew}" rendered="{!isMember}"/>
+    </apex:form>
+    <apex:form id="joinForm" rendered="{!showJoinSection}">
+        <apex:pageBlock id="jawesomepageblock">
+            <apex:pageMessages />
+                <h1>Let's Make this person a Member</h1>
+                <apex:pageBlockSection id="jformFieldPageBlockSection" >
+
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    
+                    <apex:selectList value="{!teamId}" size="1" title="Team" label="Team" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!Teams}"></apex:selectOptions>
+                    </apex:selectList>
+                    <apex:selectList value="{!memType}" size="1" title="MemType" label="Membership Type" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!MemTypes}"></apex:selectOptions>
+                    </apex:selectList>
+                    <apex:commandButton value="Join" action="{!joinMember}" />
+                </apex:pageBlockSection>
+                <apex:outputPanel rendered="{!refreshPage}">
+                    <script>
+                        window.top.location='/{!Contact.id}';
+                    </script>
+                </apex:outputPanel>
+        </apex:pageBlock>
+        
+    </apex:form>
+    <apex:form id="renewForm" rendered="{!showRenewSection}">
+        <apex:pageBlock id="rawesomepageblock">
+            <apex:pageMessages />
+                <h1>Let's Renew this Member</h1>
+                <apex:pageBlockSection id="rformFieldPageBlockSection" >
+
+                    <apex:outputField value="{!contact.Name}"/>
+                    <apex:outputField value="{!contact.Membership_Status__c}"/>
+                    <apex:outputField value="{!contact.Membership_Type__c}"/>
+                    <apex:outputField value="{!contact.Membership_Start_Date__c}"/>
+                    
+                    <apex:selectList value="{!teamId}" size="1" title="Team" label="Team" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!Teams}"></apex:selectOptions>
+                    </apex:selectList>
+                    <apex:selectList value="{!memType}" size="1" title="MemType" label="Membership Type" onchange="FetchData(this.options[this.selectedIndex].text);">
+                        <apex:selectOptions value="{!MemTypes}"></apex:selectOptions>
+                    </apex:selectList>
+                    
+                    <apex:commandButton value="Renew" action="{!renewMember}" />
+                
+                </apex:pageBlockSection>
+                <apex:outputPanel rendered="{!refreshPage}">
+                    <script>
+                        window.top.location='/{!Contact.id}';
+                    </script>
+                </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

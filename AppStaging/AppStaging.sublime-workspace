@@ -1,0 +1,676 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"act",
+				"action"
+			],
+			[
+				"or",
+				"Organizer__c"
+			],
+			[
+				"team",
+				"Stand_Team_Affiliation__c"
+			],
+			[
+				"stand",
+				"Stand_Leader__c"
+			],
+			[
+				"newMember",
+				"newMemberRecord"
+			],
+			[
+				"Activity",
+				"ActivityLogEntry"
+			],
+			[
+				"contact",
+				"contactId"
+			],
+			[
+				"add",
+				"addMessages"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/classes/WS_Person.cls",
+			"settings":
+			{
+				"buffer_size": 2462,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/WS_Membership.cls",
+			"settings":
+			{
+				"buffer_size": 3484,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/WS_Leadership.cls",
+			"settings":
+			{
+				"buffer_size": 2783,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/WS_Team.cls",
+			"settings":
+			{
+				"buffer_size": 932,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/WS_Organizer.cls",
+			"settings":
+			{
+				"buffer_size": 963,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/WS_Search.cls",
+			"settings":
+			{
+				"buffer_size": 1789,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Test_Rest_Callout.cls",
+			"settings":
+			{
+				"buffer_size": 19196,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/PersonCollection.cls",
+			"settings":
+			{
+				"buffer_size": 41617,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Person.cls",
+			"settings":
+			{
+				"buffer_size": 35540,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"new pro",
+				"MavensMate: New Project..."
+			]
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 128.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/pages/RenewPage.page",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/pages/ContactOrganizingDetails.page",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/pages/membershipActions.page",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/TeamFunctionController.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/pages/joinPage.page-meta.xml",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/MemberFunctionController.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/PersonCollection.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/TeamCollection.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/LeaderCollection.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/MembershipAutomation.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/Organizer.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/MemHelper.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/Person.cls",
+		"/C/Users/mprcic/AppData/Roaming/Sublime Text 3/Packages/User/mavensmate.sublime-settings",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/Team.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/MemberFunctionController.cls-meta.xml",
+		"/C/Users/mprcic/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/ContactDetail.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/OpportunityAutomation_Test2.cls",
+		"/C/Users/mprcic/AppData/Roaming/Sublime Text 3/Packages/User/Distraction Free.sublime-settings",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CaseUtils_Test.cls-meta.xml",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CnP_Custom_Question_Loader_TestSuite.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CampaignUtil.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/ContactDetail.cls-meta.xml",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CCInterface_Test.cls-meta.xml",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CCInterface.cls-meta.xml",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/ActivityLogEntry.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/ContactUtils.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/triggers/Contact_Trigger.trigger",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/AffiliationUpdates.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/ContactDetail_Test.cls",
+		"/C/Users/mprcic/Documents/MavensMateProjects/AppStaging/src/classes/CnP_Custom_Question_Loader.cls",
+		"/C/Users/mprcic/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 54.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"		\n",
+			"			\n",
+			"		\n",
+			"		\n		\n",
+			"		\n",
+			"showDeactivateTeam",
+			"showDeactivateTeamSection",
+			"showDeactivateTeam",
+			"showChangeChapter",
+			"false",
+			"('************************",
+			"StandException",
+			"standexception",
+			"StandException",
+			"throw new StandException",
+			"T",
+			"To Be",
+			"Be",
+			"mOld",
+			"2012",
+			"mOld",
+			"update",
+			"sdfsad",
+			"leader_stop_date;",
+			"TODO",
+			";\n",
+			"todo",
+			"c:",
+			"todo",
+			"TODO",
+			"todo"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"selected": 8,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/classes/WS_Person.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2462,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2098,
+								2098
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 911.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/classes/WS_Membership.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3484,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3013,
+								3013
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/WS_Leadership.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2783,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2311,
+								2311
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/WS_Team.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 932,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								932,
+								932
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/classes/WS_Organizer.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								963,
+								963
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 342.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/classes/WS_Search.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1789,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1315,
+								1315
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/classes/Test_Rest_Callout.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19196,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								995,
+								995
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/classes/PersonCollection.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 41617,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/classes/Person.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 35540,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5376,
+								5376
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1767.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.MavensMate-OutputPanel":
+	{
+		"height": 124.0
+	},
+	"project": "AppStaging.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"per",
+				"src\\classes\\Person.cls"
+			],
+			[
+				"person",
+				"src\\classes\\PersonCollection.cls"
+			],
+			[
+				"wspers",
+				"src\\classes\\WS_Person.cls"
+			],
+			[
+				"testrest",
+				"src\\classes\\Test_Rest_Callout.cls"
+			],
+			[
+				"ws_",
+				"src\\classes\\WS_Person.cls"
+			],
+			[
+				"renew",
+				"src\\pages\\RenewPage.page"
+			],
+			[
+				"joinpage",
+				"src\\pages\\joinPage.page-meta.xml"
+			],
+			[
+				"contactorga",
+				"src\\pages\\ContactOrganizingDetails.page"
+			],
+			[
+				"person.page",
+				"src\\pages\\membershipActions.page"
+			],
+			[
+				"team",
+				"src\\classes\\TeamFunctionController.cls"
+			],
+			[
+				"memberfun",
+				"src\\classes\\MemberFunctionController.cls"
+			],
+			[
+				"standexcpe",
+				"src\\classes\\StandException.cls"
+			],
+			[
+				"ws",
+				"src\\classes\\WS_Person.cls"
+			],
+			[
+				"wsmem",
+				"src\\classes\\WS_Membership.cls"
+			],
+			[
+				"ccint",
+				"src\\classes\\CCInterface.cls"
+			],
+			[
+				"orga",
+				"src\\classes\\Organizer.cls"
+			],
+			[
+				"teamcol",
+				"src\\classes\\TeamCollection.cls"
+			],
+			[
+				"leadercoll",
+				"src\\classes\\LeaderCollection.cls"
+			],
+			[
+				"leader",
+				"src\\classes\\Leader.cls"
+			],
+			[
+				"pers",
+				"src\\classes\\Person.cls"
+			],
+			[
+				"memberfunction",
+				"src\\classes\\MemberFunctionController.cls"
+			],
+			[
+				"controller",
+				"src\\classes\\MemberFunctionController.cls-meta.xml"
+			],
+			[
+				"mem",
+				"src\\classes\\MembershipAutomation.cls"
+			],
+			[
+				"organizer",
+				"src\\classes\\Organizer.cls"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 452.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

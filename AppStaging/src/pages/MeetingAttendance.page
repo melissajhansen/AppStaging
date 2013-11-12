@@ -1,0 +1,99 @@
+<apex:page standardController="Class__c" extensions="MeetingAttendanceController">    
+    <style type="text/css">
+    .ccLine{border-style:none;background-color:#E5C130;height:2px;}
+    .StyleError{ color: red; font-weight: strong;}
+    </style>
+    <apex:messages styleClass="StyleError"/>
+    <apex:form id="formIdMeeting">
+        
+        <apex:pageBlock title="Meeting Attendance" >
+             <apex:pageBlockSection title="Meeting Details"  columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Meeting Name"/>
+                    <apex:outputField value="{!meeting.Name}" /> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Meeting Date"/>
+                    <apex:outputField value="{!meeting.Date_Time__c}" /> 
+                </apex:pageBlockSectionItem> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Program name"/>
+                    <apex:outputField value="{!meeting.Cohort__c}" /> 
+                </apex:pageBlockSectionItem>
+           <!-- <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Meeting Facility"/>
+                    <apex:outputField value="{!meeting.Facility__c}" /> 
+                </apex:pageBlockSectionItem> -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Description"/>
+                    <apex:outputField value="{!meeting.Description__c}" /> 
+                </apex:pageBlockSectionItem>
+           <!-- <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Special Expenses"/>
+                    <apex:outputField value="{!meeting.Special_Expenses__c}" /> 
+                </apex:pageBlockSectionItem> -->
+              
+            </apex:pageBlockSection> 
+            <div style="text-align: center;" >
+              <br />
+              <table Width="100%">
+                <tr>
+                    <td class="ccLine" />
+                </tr>
+              </table>  
+            </div>
+            <br/>
+            
+            <apex:outputPanel rendered="{!NOT(validDateTime)}"> 
+              <br/>           
+              <p style="text-align:center;">You can complete the meeting attendance only after the meeting is over</p>
+              <br/>               
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(ISNULL(listAttendees))}">                
+                <br/><br/>
+                <apex:pageBlockTable value="{!listAttendees}" var="contactSelected"  >
+                    
+                    <apex:column >
+                        <apex:facet name="header">Attendee Name</apex:facet>
+                        <apex:outputField value="{!contactSelected.contact.Name}" />
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">Phone</apex:facet>
+                        <apex:outputField value="{!contactSelected.contact.Phone}" />
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">Attended the meeting</apex:facet>
+                        <apex:inputCheckbox id="selectAttended" value="{!contactSelected.selectedAttended}" />
+                    </apex:column>
+                    
+                    
+                    
+             <!--   <apex:column >
+                        <apex:facet name="header">Reason if not attended</apex:facet>
+                        <apex:inputText value="{!contactSelected.reason}" id="reason" />
+                    </apex:column>      -->              
+                    
+                    <!--<apex:column >
+                        <apex:facet name="header">Attendee drops out from  program</apex:facet>
+                        <apex:inputCheckbox id="selectDrop" value="{!contactSelected.selectedDrop}" />
+                    </apex:column>-->
+
+                </apex:pageBlockTable>
+                <br/>
+            </apex:outputPanel>
+            <br/>
+            <div style="text-align: center;" >
+              <br />
+              <table Width="100%">
+                <tr>
+                    <td class="ccLine" />
+                </tr>
+              </table>  
+              <apex:commandButton rendered="{!NOT(ISNULL(listAttendees))}" action="{!SaveAttendance}" value="Save" id="btnSave" style="align:center;"/>
+            </div>
+        </apex:pageBlock>  
+    </apex:form> 
+
+</apex:page>
