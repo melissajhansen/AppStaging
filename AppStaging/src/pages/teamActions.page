@@ -8,7 +8,7 @@
 		        <apex:commandButton value="Deactivate Team" action="{!showDeactivateTeam}" rendered="True"/>
 			</apex:pageBlockButtons>
 			<apex:pageBlockSection >
-				<apex:pageMessages/>
+				<apex:pageMessages />
 				<apex:outputField value="{!account.name}" label="Team Name"/>
 				<apex:outputField value="{!account.parent.name}" label="Chapter"/>
 				<apex:outputField value="{!account.Organizer__r.name}"/>
@@ -34,7 +34,7 @@
 			</apex:pageBlockButtons>
 			<apex:pageMessage summary="WARNING!! This will move the entire team, its members and Leaders to the chapter you select.  Please be sure this is correct before completing."  severity="warning" strength="3"/>
 			<apex:pageBlockSection id="changeChapterSection">
-				<apex:pageMessages/>
+				<apex:pageMessages />
 				<apex:selectList value="{!chapterId}" id="Chapter" size="1" label="Chapter">
 					<apex:selectOptions value="{!Chapters}"/>
 				</apex:selectList>
@@ -50,7 +50,7 @@
 				<apex:commandButton value="Cancel" action="{!doCancel}"/>
 			</apex:pageBlockButtons>
 			<apex:pageBlockSection id="editDetailsSection">
-				<apex:pageMessages/>
+				<apex:pageMessages />
 				<apex:inputtext value="{!teamName}" label="Team Name"/>
 				<apex:selectList value="{!organizerId}" id="Organizer" size="1" label="Organizer">
 					<apex:selectOptions value="{!Organizers}"/>
@@ -65,7 +65,7 @@
 				<apex:commandButton value="Deactivate" action="{!deactivateTeam}"/>
 				<apex:commandButton value="Cancel" action="{!doCancel}"/>
 			</apex:pageBlockButtons>
-			<apex:pageMessages/>
+			<apex:pageMessages />
 			<apex:pageMessage summary="WARNING! This will make this Team Inactive and remove the Organizer." severity="warning" strength="2"/>
 			<apex:pageBlockSection id="deactivateTeamSection">
 				<apex:outputField value="{!account.parent.name}"/>

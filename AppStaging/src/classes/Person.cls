@@ -672,7 +672,7 @@ global with sharing class Person {
 			newContact.LastName = this.last_name;
 			newContact.MailingStreet = this.mailing_address_street;
 			newContact.MailingCity = this.mailing_address_city;
-			newContact.MailingState = this.mailing_address_state;
+			newContact.MailingState = this.mailing_address_state;//TODO, logic here, if mailing state is empty, use User State
 			newContact.MailingPostalCode = this.mailing_address_zip;
 			newContact.npe01__HomeEmail__c = this.personal_email;
 			newContact.npe01__Preferred_Email__c = this.preferred_email_type;
